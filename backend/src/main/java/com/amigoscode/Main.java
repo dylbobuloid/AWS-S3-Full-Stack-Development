@@ -26,10 +26,23 @@ public class Main {
     @Bean
     CommandLineRunner runner(
             CustomerRepository customerRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            S3Service s3Service) {
         return args -> {
-            createRandomCustomer(customerRepository, passwordEncoder);
+            //createRandomCustomer(customerRepository, passwordEncoder);
             // testBucketUploadAndDownload(s3Service, s3Buckets);
+
+
+            s3Service.putObject("fs-dylbobuloid-customer-test",
+            "foo/bar/dylan",
+            "Hello World".getBytes()
+            );
+
+            byte[] obj = s3Service.getObject("fs-dylbobuloid-customer-test",
+                    "foo/bar/dylan"
+            );
+
+            System.out.println("Hooray " + new String(obj));
         };
     }
 
